@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.3.0.RELEASE")
+    }
+}
+plugins {
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    id 'idea'
+    id 'application'
+    id 'eclipse'
+}
+
+
+mainClassName = 'hello.HelloWorldApplication'
+bootJar {
+    baseName = 'gs-spring-boot-docker'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+//sourceCompatibility = 1.8
+//targetCompatibility = 1.8
+
+dependencies {
+    implementation 'org.testng:testng:6.14.3'
+    compile "joda-time:joda-time:2.2"
+    testCompile "junit:junit:4.12"
+    compile("org.springframework.boot:spring-boot-starter-web")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+test {
+    useJUnitPlatform()
+}

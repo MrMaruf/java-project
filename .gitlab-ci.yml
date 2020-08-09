@@ -1,0 +1,88 @@
+# This file is a template, and might need editing before it works on your project.
+# This is the Gradle build system for JVM applications
+# https://gradle.org/
+# https://github.com/gradle/gradle
+
+
+# Disable the Gradle daemon for Continuous Integration servers as correctness
+# is usually a priority over speed in CI environments. Using a fresh
+# runtime for each build is more reliable since the runtime is completely
+# isolated from any previous builds.
+stages:
+    - build
+    - deploy
+
+gradle-build:
+  image: gradle:latest
+  stage: build
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - ls
+    - gradle --build-cache assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
+  only:
+    - master
+# gradle-test:
+#   stage: test
+#   script: gradle check
+#   cache:
+#     key: "$CI_COMMIT_REF_NAME"
+#     policy: pull
+#     paths:
+#       - build
+#       - .gradle
+
+# This file is a template, and might need editing before it works on your project.
+#docker-build-master:
+#  # Official docker image.
+#  image: docker:latest
+#  stage: build
+#  services:
+#    - docker:dind
+#  before_script:
+#    - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+#  script:
+#    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+#    - docker push "$CI_REGISTRY_IMAGE"
+#  only:
+#    - staging
+
+docker-build-staging-shell:
+  image: docker:latest
+  stage: deploy
+  tags:
+    - staging
+    - docker
+    - deploy
+  services:
+    - docker:dind
+  script:
+    - ls
+    - docker build -t springio/gs-spring-boot-docker .
+    - docker run -p 8080:8080 springio/gs-spring-boot-docker
+  only:
+    - staging
+
+# docker-build:
+#   # Official docker image.
+#   image: docker:latest
+#   stage: build
+#   services:
+#     - docker:dind
+#   before_script:
+#     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+#   script:
+#     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+#     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+#   except:
+#     - master
+
+after_script:
+  - echo "End CI"
