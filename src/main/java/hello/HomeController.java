@@ -9,11 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HomeController {
     @RequestMapping("/")
     public @ResponseBody String home() {
-        LocalTime currentTime = new LocalTime();
-        Greeter greeter = new Greeter();
-        String msg = "The current local time is: " + currentTime;
-        msg += "\n" + greeter.sayHello();
-
-        return msg;
+        return "home";
     }
 }
