@@ -19,7 +19,7 @@ public class GreetingController {
         LocalTime currentTime = new LocalTime();
         GreetingService greeter = new GreetingService();
         String msg = "The current local time is: " + currentTime;
-        msg += "\n" + service.greet();
+        msg += "|| \n" + service.greet();
 
         return msg;
     }
