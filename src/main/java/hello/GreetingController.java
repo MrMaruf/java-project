@@ -42,8 +42,7 @@ public class GreetingController {
     public void deleteUserData(@PathVariable String username ) {
         if(service.getUsername().equals(username))
         {
-            service.setUsername(null);
-            service.setTitle(null);
+            service.resetData();
         }
 
     }

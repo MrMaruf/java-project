@@ -21,8 +21,12 @@ public class GreetingService {
         if(username != null)
             msg += ("\nYou entered under following username: " + this.username);
         if(title != null)
-            msg += ("Your title: " + this.title);
+            msg += ("\nYour title: " + this.title);
         return msg;
+    }
+    public void resetData(){
+        this.setUsername(null);
+        this.setTitle(null);
     }
     public String getUsername() {
         return username;
