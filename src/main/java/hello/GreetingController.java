@@ -25,12 +25,12 @@ public class GreetingController {
         return msg;
     }
     @PostMapping("/user")
-    String newUsername(@RequestBody String newUsername) {
+    public @ResponseBody String newUsername(@RequestParam String newUsername) {
         service.setUsername(newUsername);
         return service.getUsername();
     }
     @PutMapping("/user/{username}")
-    String newTitle(@RequestBody String newTitle, @PathVariable String username) throws Exception {
+    public @ResponseBody String newTitle(@RequestParam String newTitle, @PathVariable String username) throws Exception {
         if(service.getUsername().equals(username)) {
             service.setTitle(newTitle);
             return service.getTitle();
@@ -39,7 +39,7 @@ public class GreetingController {
             throw new Exception("Not found");
     }
     @DeleteMapping("/user/{username}")
-    void deleteUserData(@PathVariable String username ) {
+    public void deleteUserData(@PathVariable String username ) {
         if(service.getUsername().equals(username))
         {
             service.setUsername(null);
