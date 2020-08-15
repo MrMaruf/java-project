@@ -8,11 +8,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(GreetingController.class)
@@ -27,13 +29,17 @@ public class WebMockTest {
     @Test
     public void greetingShouldReturnMessageFromService() throws Exception {
         when(service.greet()).thenReturn("Hello, Mock");
-        this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/greeting/")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Hello, Mock")));
     }
     @Test
     public void usernameCanBeSet() throws Exception {
-        this.mockMvc.perform(post("/user").content("Maruf")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Maruf")));
+//        this.mockMvc.perform(post("/user").content("Maruf").contentType(MediaType.TEXT_PLAIN)).andDo(print()).andExpect(status().isOk())
+//                .andExpect(content().string(containsString("Maruf")));
+        ObjectMapper mapper =  new ObjectMapper();
+        String requestJson = mapper.writeValueAsString(new String("Maruf"));
+        this.mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print()).andExpect(status()
+                .isOk()).andExpect(content().string(containsString("Maruf")));
     }
     @Test
     public void greetingShouldReturnMessageFromServiceWithUsername() throws Exception {

@@ -5,7 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-@Controller
+@RestController
+@RequestMapping(path = "/greeting")
 public class GreetingController {
 
     private final GreetingService service;
@@ -14,7 +15,7 @@ public class GreetingController {
         this.service = service;
     }
 
-    @RequestMapping("/greeting")
+    @GetMapping("/")
     public @ResponseBody String greeting() {
         LocalTime currentTime = new LocalTime();
         GreetingService greeter = new GreetingService();

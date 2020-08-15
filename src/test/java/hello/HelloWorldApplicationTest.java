@@ -30,7 +30,7 @@ public class HelloWorldApplicationTest {
     private MockMvc mockMvc;
 
     @Test
-    public void contexLoads() throws Exception {
+    public void controllerIsNotNull() throws Exception {
         Assertions.assertThat(controller).isNotNull();
     }
     @Test
